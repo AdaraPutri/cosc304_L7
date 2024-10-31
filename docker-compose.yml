@@ -25,7 +25,7 @@ services:
             MYSQL_PASSWORD: '304testpw'            
             MYSQL_ROOT_PASSWORD: '304rootpw'
         ports:
-            - '3306:3306'
+            - '3307:3306'
         expose:
             - '3306'   
         volumes:
@@ -36,7 +36,7 @@ services:
                 aliases:
                     - cosc304_mysql
     cosc304-sqlserver:
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        image: mcr.microsoft.com/azure-sql-edge
         container_name: cosc304-sqlserver
         restart: always
         environment:
