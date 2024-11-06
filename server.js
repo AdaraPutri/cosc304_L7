@@ -30,9 +30,12 @@ dbConfig = {
   }
 }
 
+console.log('DB Config:', dbConfig);
 // Setting up the session.
 // This uses MemoryStorage which is not
 // recommended for production use.
+
+console.log('Setting up session...');
 app.use(session({
   secret: 'COSC 304 Rules!',
   resave: false,
@@ -45,12 +48,14 @@ app.use(session({
 }))
 
 // Setting up the rendering engine
+console.log('Setting up handlebars rendering engine...');
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
 // Setting up Express.js routes.
 // These present a "route" on the URL of the site.
 // Eg: http://127.0.0.1/loaddata
+console.log('Setting up routes...');
 app.use('/loaddata', loadData);
 app.use('/listorder', listOrder);
 app.use('/listprod', listProd);
@@ -61,10 +66,12 @@ app.use('/order', order);
 
 // Rendering the main page
 app.get('/', function (req, res) {
+  console.log('Rendering main page...')
   res.render('index', {
     title: "YOUR NAME Grocery Main Page"
   });
 })
 
 // Starting our Express app
+console.log('Starting server and listening on port 3000...');
 app.listen(3000)
