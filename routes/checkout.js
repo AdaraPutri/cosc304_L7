@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
             margin-bottom: 20px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -79,9 +79,10 @@ router.get('/', function(req, res, next) {
 
     res.write('<!-- Back to Home Text with Arrow --><a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>');
     res.write("<div class='container'>");
-    res.write("<h1>Enter your customer id to complete the transaction:</h1>");
+    res.write("<h1>Enter your customer id and password to complete the transaction:</h1>");
     res.write('<form method="get" action="order">');
-    res.write('<input type="text" name="customerId" size="50" required>');
+    res.write('<input type="text" name="customerId" size="50" required placeholder="Customer ID">');
+    res.write('<input type="password" name="password" size="50" required placeholder="Password">');
     res.write('<input type="submit" value="Submit"><input type="reset" value="Reset">');
     res.write('</form>');
     res.write("</div>");
@@ -90,4 +91,5 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
+
 
