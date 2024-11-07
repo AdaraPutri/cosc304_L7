@@ -70,7 +70,7 @@ app.use('/order', order);
 app.get('/', function (req, res) {
   console.log('Rendering main page...')
   res.render('index', {
-    title: "YOUR NAME Grocery Main Page"
+    title: "ZnA Grocery Main Page"
   });
 })
 

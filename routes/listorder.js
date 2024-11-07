@@ -22,7 +22,67 @@ const dbConfig = {
 
 router.get('/', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
-    res.write('<title>YOUR NAME Grocery Order List</title>');
+    res.write('<title>ZnA Grocery Order List</title>');
+    
+    // Add the styling for the page
+    res.write(`
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        h1 {
+            color: #4CAF50; /* Sage green */
+            margin-top: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px 0;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 50px; /* Adjust this value to add more space from the top */
+            left: 20px;
+            font-size: 20px;
+            color: #000000;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+    `);
 
     (async function() {
         try {
@@ -52,9 +112,10 @@ router.get('/', function(req, res, next) {
                 });
             });
             
+            res.write('<!-- Back to Home Text with Arrow --><a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>');
             res.write('<h1>Order List</h1>');
 
-            res.write("<table border='1'><tr><th>Order Id</th><th>Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr>");
+            res.write("<table><tr><th>Order Id</th><th>Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr>");
             
             for (let orderid in groupedOrders) {
                 let order = groupedOrders[orderid];
@@ -68,7 +129,7 @@ router.get('/', function(req, res, next) {
                 res.write("</tr>");
                 
                 res.write("<tr><td colspan='2'>&nbsp;</td><td colspan='3'>");
-                res.write("<table border='1'><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr>");
+                res.write("<table><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr>");
                 order.items.forEach(item => {
                     res.write("<tr>");
                     res.write("<td>" + item.productid + "</td>");
@@ -79,7 +140,6 @@ router.get('/', function(req, res, next) {
                 res.write("</table>");
                 res.write("</td></tr>");
             }
-
 
             res.write("</table>");
             res.end();
