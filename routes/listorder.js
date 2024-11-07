@@ -5,7 +5,7 @@ const moment = require('moment');
 
 const dbConfig = {    
     server: 'cosc304_sqlserver',
-    database: 'workson',
+    database: 'orders',
     authentication: {
         type: 'default',
         options: {
@@ -16,7 +16,7 @@ const dbConfig = {
     options: {      
         encrypt: false,      
         enableArithAbort: false,
-        database: 'workson'
+        database: 'orders'
     }
 };
 
@@ -26,43 +26,62 @@ router.get('/', function(req, res, next) {
 
     (async function() {
         try {
-            // Connect to the database
             let pool = await sql.connect(dbConfig);
 
-            // Query to get all order headers
-            let ordersQuery = `
-                SELECT OrderID, CustomerName, OrderDate
-                FROM Orders
-            `;
+            let ordersQuery = 
+            "SELECT o.orderid, o.orderdate, o.customerid, c.firstname + ' ' + c.lastname AS customername, o.totalamount, op.productid, op.quantity, op.price FROM ordersummary o JOIN customer c ON o.customerid = c.customerid JOIN orderproduct op ON o.orderid = op.orderid ORDER BY o.orderid ASC;";
             let ordersResult = await pool.request().query(ordersQuery);
-
-            // Display each order's information
-            for (let order of ordersResult.recordset) {
-                res.write(`<h3>Order ID: ${order.OrderID}</h3>`);
-                res.write(`<p>Customer Name: ${order.CustomerName}</p>`);
-                res.write(`<p>Order Date: ${moment(order.OrderDate).format('MMMM Do YYYY')}</p>`);
-
-                // Query to get products for the current order
-                let productsQuery = `
-                    SELECT ProductName, Quantity, Price
-                    FROM OrderProducts
-                    WHERE OrderID = ${order.OrderID}
-                `;
-                let productsResult = await pool.request().query(productsQuery);
-
-                // Display products in a table
-                res.write("<table border='1'><tr><th>Product Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>");
-                for (let product of productsResult.recordset) {
-                    let total = (product.Quantity * product.Price).toFixed(2); // Calculate total and format to 2 decimals
-                    res.write(`<tr>
-                        <td>${product.ProductName}</td>
-                        <td>${product.Quantity}</td>
-                        <td>$${parseFloat(product.Price).toFixed(2)}</td>
-                        <td>$${total}</td>
-                    </tr>`);
+            
+            let groupedOrders = {}; 
+            ordersResult.recordset.forEach((order) => {
+                if (!groupedOrders[order.orderid]) {
+                    groupedOrders[order.orderid] = {
+                        orderid: order.orderid,
+                        orderdate: order.orderdate,
+                        customerid: order.customerid,
+                        customername: order.customername,
+                        totalamount: order.totalamount,
+                        items: []
+                    };
                 }
-                res.write("</table><br>");
+                
+                groupedOrders[order.orderid].items.push({
+                    productid: order.productid,
+                    quantity: order.quantity,
+                    price: order.price
+                });
+            });
+            
+            res.write('<h1>Order List</h1>');
+
+            res.write("<table border='1'><tr><th>Order Id</th><th>Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr>");
+            
+            for (let orderid in groupedOrders) {
+                let order = groupedOrders[orderid];
+
+                res.write("<tr>");
+                res.write("<td>" + order.orderid + "</td>");
+                res.write("<td>" + moment(order.orderdate).format("YYYY-MM-DD HH:mm:ss") + "</td>");
+                res.write("<td>" + order.customerid + "</td>");
+                res.write("<td>" + order.customername + "</td>");
+                res.write("<td>" + new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(order.totalamount) + "</td>");
+                res.write("</tr>");
+                
+                res.write("<tr><td colspan='2'>&nbsp;</td><td colspan='3'>");
+                res.write("<table border='1'><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr>");
+                order.items.forEach(item => {
+                    res.write("<tr>");
+                    res.write("<td>" + item.productid + "</td>");
+                    res.write("<td>" + item.quantity + "</td>");
+                    res.write("<td>" + new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price) + "</td>");
+                    res.write("</tr>");
+                });
+                res.write("</table>");
+                res.write("</td></tr>");
             }
+
+
+            res.write("</table>");
             res.end();
 
         } catch (err) {
