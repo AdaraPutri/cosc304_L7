@@ -9,6 +9,8 @@ let addCart = require('./routes/addcart');
 let showCart = require('./routes/showcart');
 let checkout = require('./routes/checkout');
 let order = require('./routes/order');
+let updateQuantity = require('./routes/updateQuantity');
+let removeItem = require('./routes/removeItem');
 
 const app = express();
 
@@ -71,6 +73,9 @@ app.get('/', function (req, res) {
     title: "YOUR NAME Grocery Main Page"
   });
 })
+
+app.use('/updateQuantity', updateQuantity);
+app.use('/removeItem', removeItem);
 
 // Starting our Express app
 console.log('Starting server and listening on port 3000...');
