@@ -5,6 +5,8 @@ const session = require('express-session')
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
 let listProd = require('./routes/listprod');
+let product= require('./routes/product')
+let displayImage= require('./routes/displayImage')
 let addCart = require('./routes/addcart');
 let showCart = require('./routes/showcart');
 let checkout = require('./routes/checkout');
@@ -62,10 +64,14 @@ app.use('/loaddata', loadData);
 app.use('/listorder', listOrder);
 app.use('/listprod', listProd);
 app.use('/addcart', addCart);
+app.use('/product',product)
+app.use('/displayImage',displayImage)
 app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
 
+//static file to allow local images to display
+app.use('/public', express.static('public'));
 // Rendering the main page
 app.get('/', function (req, res) {
   console.log('Rendering main page...')
@@ -73,6 +79,7 @@ app.get('/', function (req, res) {
     title: "ZnA Grocery Main Page"
   });
 })
+
 
 app.use('/updateQuantity', updateQuantity);
 app.use('/removeItem', removeItem);

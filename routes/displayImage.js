@@ -12,11 +12,11 @@ router.get('/', function(req, res, next) {
         return;
     }
 
-    (async function() {
+    (async function () {
         try {
             let pool = await sql.connect(dbConfig);
 
-            let sqlQuery = "// TODO: Modify SQL to retrieve productImage given productId";
+            let sqlQuery = "SELECT p.productImage from product p where p.productId=?";
 
             result = await pool.request()
                 .input('id', sql.Int, idVal)
