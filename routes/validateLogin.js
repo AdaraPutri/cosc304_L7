@@ -29,13 +29,28 @@ async function validateLogin(req) {
 
 	// TODO: Check if userId and password match some customer account. 
 	// If so, set authenticatedUser to be the username.
-
-           return false;
+    let query="SELECT c.userid, c.password FROM customer c WHERE c.userid=@username AND c.password=@password";
+    let result=await pool.request()
+        .input('username',sql.NVarChar,username)
+        .input('password',sql.NVarChar,password)
+        .query(query);
+       
+    //currently assumes that userid and password pairs are unique 
+    if(result.recordset.length> 0){
+         //to test the output
+         res.write("<h2>" + result.recordset[0].userid + " </h2>")
+        req.session.authenticatedUser=result.recordset[0].userid;
+        }
+    else{
+        return false;
+        }
+           
+        
         } catch(err) {
             console.dir(err);
             return false;
         }
-    })();
+    })
 
     return authenticatedUser;
 }
