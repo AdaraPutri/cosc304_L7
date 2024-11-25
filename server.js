@@ -11,6 +11,10 @@ let checkout = require('./routes/checkout');
 let order = require('./routes/order');
 let updateQuantity = require('./routes/updateQuantity');
 let removeItem = require('./routes/removeItem');
+let login = require('./routes/login');
+let customer = require('./routes/customer');
+let admin = require('./routes/admin');
+let logout = require('./routes/logout');
 
 const app = express();
 
@@ -65,6 +69,10 @@ app.use('/addcart', addCart);
 app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
+app.use('/login', login);
+app.use('/customer', customer);
+app.use('/admin', admin);
+app.use('/logout', logout);
 
 // Rendering the main page
 app.get('/', function (req, res) {
