@@ -77,16 +77,13 @@ app.use('/displayImage',displayImage)
 app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
-app.use('/admin',admin);
-app.use('/login',login);
-app.use('/logout',logout);
-app.use('/customer',customer);
-app.use('/validateLogin',validateLogin);
-app.use('/index',index);
+app.use('/admin', admin);
+app.use('/login', login);
+app.use('/logout', logout);
+app.use('/customer', customer);
+app.use('/validateLogin', validateLogin);
+app.use('/index', index);
 
-
-//static file to allow local images to display
-app.use('/public', express.static('public'));
 // Rendering the main page
 app.get('/', function (req, res) {
   console.log('Rendering main page...')
