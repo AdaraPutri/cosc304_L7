@@ -45,8 +45,8 @@ router.get('/', function(req, res, next) {
     </style>
     `);
 
-    const userid = req.query.userid;
-    const password = req.query.password;
+    const userid = req.session.authenticatedUser;
+
 
     (async function() {
         try {
@@ -57,13 +57,12 @@ router.get('/', function(req, res, next) {
             let query = `
                 SELECT customerId, firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid
                 FROM customer
-                WHERE userid = @userid AND password = @password
+                WHERE userid = @userid
             `;
 
             // Execute the query
             let result = await pool.request()
                 .input('userid', sql.NVarChar, userid)
-                .input('password', sql.NVarChar, password)
                 .query(query);
 
             // Check if any results were returned
