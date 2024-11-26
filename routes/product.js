@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
+const displayImage = require('./displayImage')
 
 router.get('/', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
@@ -20,21 +21,19 @@ router.get('/', function(req, res, next) {
                 
 	// TODO: Retrieve and display info for the product
     result.recordset.forEach(product => {
-        let displayImageLink="/displayImage?id="+ product.productId;
+        
         let localImageLink="/public/"+ product.productImageURL;
         let addToCartLink = "/addcart?id=" + product.productId + "&name=" + encodeURIComponent(product.productName) + "&price=" + product.productPrice.toFixed(2);
         let continueShoppingLink="/listprod";
+        let displayImageLink="/displayImage?id="+ product.productId;
 
         res.write("<h1>" + product.productName+ "</h1>");
         if(product.productImageURL){
             res.write("<img src =" + localImageLink + "></img>")
         }
+        res.write("<img src=" + displayImageLink + " ></img>");
         
-        // fetch(displayImageLink)
-        // .then(response => response.text())  
-        // .then(displayImage => {
-        //     res.write ("<img src=' data:image/jpg;base64," + displayImage + "'></img>");    
-        // })
+
         res.write("<h2><a href="  + addToCartLink + ">Add to Cart</a></h2>")
         res.write("<h2><a href=" + continueShoppingLink + " >Continue Shopping</a></h2>")
     } );   
