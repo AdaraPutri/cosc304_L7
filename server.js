@@ -1,20 +1,24 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
-const session = require('express-session')
+const session = require('express-session');
 
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
 let listProd = require('./routes/listprod');
+let product= require('./routes/product');
+let displayImage= require('./routes/displayImage');
 let addCart = require('./routes/addcart');
 let showCart = require('./routes/showcart');
 let checkout = require('./routes/checkout');
 let order = require('./routes/order');
 let updateQuantity = require('./routes/updateQuantity');
 let removeItem = require('./routes/removeItem');
-let login = require('./routes/login');
-let customer = require('./routes/customer');
-let admin = require('./routes/admin');
-let logout = require('./routes/logout');
+let admin=require('./routes/admin');
+let login=require('./routes/login');
+let logout=require('./routes/logout');
+let customer=require('./routes/customer');
+let validateLogin=require('./routes/validateLogin');
+let index=require('./routes/index');
 
 const app = express();
 
@@ -57,6 +61,8 @@ app.use(session({
 console.log('Setting up handlebars rendering engine...');
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Setting up Express.js routes.
 // These present a "route" on the URL of the site.
@@ -66,21 +72,24 @@ app.use('/loaddata', loadData);
 app.use('/listorder', listOrder);
 app.use('/listprod', listProd);
 app.use('/addcart', addCart);
+app.use('/product',product)
+app.use('/displayImage',displayImage)
 app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
-app.use('/login', login);
-app.use('/customer', customer);
 app.use('/admin', admin);
+app.use('/login', login);
 app.use('/logout', logout);
+app.use('/customer', customer);
+app.use('/validateLogin', validateLogin);
+app.use('/index', index);
 
 // Rendering the main page
 app.get('/', function (req, res) {
   console.log('Rendering main page...')
-  res.render('index', {
-    title: "ZnA Grocery Main Page"
-  });
+  res.redirect("/index")
 })
+
 
 app.use('/updateQuantity', updateQuantity);
 app.use('/removeItem', removeItem);

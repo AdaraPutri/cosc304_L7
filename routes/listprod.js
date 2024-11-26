@@ -159,15 +159,16 @@ router.get('/', function(req, res) {
                 .input('category', sql.NVarChar, category)
                 .query(query);
 
-            res.write("<h3>All Products</h3>");
+            res.write("<h3>All Products </h3>");
             res.write("<table border='1'><tr><th>Add to Cart</th><th>Product Name</th><th>Category</th><th>Price</th></tr>");
 
             result.recordset.forEach(product => {
                 let addToCartLink = "/addcart?id=" + product.productId + "&name=" + encodeURIComponent(product.productName) + "&price=" + product.productPrice.toFixed(2);
+                let productPageLink= "/product?id=" + product.productId;
 
                 res.write("<tr>");
                 res.write("<td><a href='" + addToCartLink + "'>Add to Cart</a></td>");
-                res.write("<td>" + product.productName + "</td>");
+                res.write("<td><a href='" + productPageLink + "'>" + product.productName+ "</a></td>");                
                 res.write("<td>" + product.categoryName + "</td>");
                 res.write("<td>$" + product.productPrice.toFixed(2) + "</td>");
                 res.write("</tr>");
