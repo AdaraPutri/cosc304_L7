@@ -19,6 +19,7 @@ let logout=require('./routes/logout');
 let customer=require('./routes/customer');
 let validateLogin=require('./routes/validateLogin');
 let index=require('./routes/index');
+let ship=require('./routes/ship');
 
 const app = express();
 
@@ -83,6 +84,7 @@ app.use('/logout', logout);
 app.use('/customer', customer);
 app.use('/validateLogin', validateLogin);
 app.use('/index', index);
+app.use('/ship',ship);
 
 // Rendering the main page
 app.get('/', function (req, res) {
