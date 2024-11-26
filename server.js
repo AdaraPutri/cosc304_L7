@@ -1,12 +1,12 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
-const session = require('express-session')
+const session = require('express-session');
 
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
 let listProd = require('./routes/listprod');
-let product= require('./routes/product')
-let displayImage= require('./routes/displayImage')
+let product= require('./routes/product');
+let displayImage= require('./routes/displayImage');
 let addCart = require('./routes/addcart');
 let showCart = require('./routes/showcart');
 let checkout = require('./routes/checkout');
@@ -18,6 +18,7 @@ let login=require('./routes/login');
 let logout=require('./routes/logout');
 let customer=require('./routes/customer');
 let validateLogin=require('./routes/validateLogin');
+let index=require('./routes/index');
 
 const app = express();
 
@@ -60,6 +61,8 @@ app.use(session({
 console.log('Setting up handlebars rendering engine...');
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Setting up Express.js routes.
 // These present a "route" on the URL of the site.
@@ -79,6 +82,7 @@ app.use('/login',login);
 app.use('/logout',logout);
 app.use('/customer',customer);
 app.use('/validateLogin',validateLogin);
+app.use('/index',index);
 
 
 //static file to allow local images to display
@@ -86,9 +90,7 @@ app.use('/public', express.static('public'));
 // Rendering the main page
 app.get('/', function (req, res) {
   console.log('Rendering main page...')
-  res.render('index', {
-    title: "ZnA Grocery Main Page"
-  });
+  res.redirect("/index")
 })
 
 
