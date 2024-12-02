@@ -86,6 +86,11 @@ app.use('/validateLogin', validateLogin);
 app.use('/index', index);
 app.use('/ship',ship);
 
+
+//static file to allow local images to display
+app.use('/public', express.static('public'));
+app.use(express.static('public'));
+
 // Rendering the main page
 app.get('/', function (req, res) {
   console.log('Rendering main page...')

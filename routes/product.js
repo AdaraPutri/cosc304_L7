@@ -36,17 +36,7 @@ router.get('/', function(req, res, next) {
 
         res.write("<h2><a href="  + addToCartLink + ">Add to Cart</a></h2>")
         res.write("<h2><a href=" + continueShoppingLink + " >Continue Shopping</a></h2>")
-    } );   
-
-	// TODO: If there is a productImageURL, display using IMG tag
-
-	// TODO: Retrieve any image stored directly in database. Note: Call displayImage.jsp with product id as parameter.
-
-	// TODO: Add links to Add to Cart and Continue Shopping
-   
-
-    
-
+    } );  
             res.end()
         } catch(err) {
             console.dir(err);
