@@ -21,6 +21,7 @@ let validateLogin=require('./routes/validateLogin');
 let index=require('./routes/index');
 let ship=require('./routes/ship');
 let addprod=require('./routes/addprod')
+let updateprod= require('./routes/updateprod')
 
 const app = express();
 
@@ -87,6 +88,7 @@ app.use('/validateLogin', validateLogin);
 app.use('/index', index);
 app.use('/ship',ship);
 app.use('/addprod', addprod);
+app.use('/updateprod', updateprod);
 
 // Rendering the main page
 app.get('/', function (req, res) {

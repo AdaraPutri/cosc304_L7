@@ -13,6 +13,7 @@ router.post('/', async(req, res) =>{
 try{
     let pool= await sql.connect(dbConfig);
 
+
     query="INSERT INTO product(productName, productPrice, productDesc, categoryId) VALUES (@productName, @productPrice, @productDesc, @productCategory)";
     result= await pool.request()
     .input("productName", sql.NVarChar,productName)
@@ -23,8 +24,7 @@ try{
 
     req.session.successMessage=`Product "${productName}" added successfully!`;
 }
-catch{
-    console.error(err);
+catch(err){
     console.error(err);
     req.session.errorMessage='An error occurred while adding the product.';
        

@@ -12,6 +12,8 @@ router.get('/', function(req, res, next) {
     res.setHeader('Content-Type', 'text/html');
     let successMessage=req.session.successMessage? req.session.successMessage: false;
     let errorMessage=req.session.errorMessage? req.session.errorMessage: false;
+    let updateSuccessMessage=req.session.updateSuccessMessage;
+    let updateErrorMessage=req.session.updateErrorMessage;
 
     (async function() {
         try {
@@ -33,10 +35,16 @@ router.get('/', function(req, res, next) {
             res.render('admin',{
                 order: orders,
                 successMessage: successMessage,
-                errorMessage:errorMessage
+                errorMessage:errorMessage,
+                updateSuccessMessage: updateSuccessMessage,
+                updateErrorMessage: updateErrorMessage,
+
             });
             req.session.successMessage=null;
             req.session.errorMessage=null;
+            req.session.updateSuccessMessage=null;
+            req.session.updateErrorMessage=null;
+
 
         } catch(err) {
             console.dir(err);
