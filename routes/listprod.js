@@ -170,19 +170,14 @@ router.get('/', function(req, res) {
                 let localImageLink="/public/"+ product.productImageURL;
                 let imagetext="";
                 if(product.productImageURL){
-                    console.log("1")
                     imagetext="<img src =" + localImageLink + "></img>";
                 }
                 else if(product.productImage){
-                    console.log("2")
                     imagetext="<img src=" + displayImageLink + "></img>";
                 }
                 else{
-                    console.log("3")
                     imagetext='No Image available';
                 }
-                
-
 
                 res.write("<tr>");
                 res.write("<td><a href='" + addToCartLink + "'>Add to Cart</a></td>");
