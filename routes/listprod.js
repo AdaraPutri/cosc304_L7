@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
+const displayImage = require('./displayImage')
 
 const dbConfig = {
     server: 'cosc304_sqlserver',
@@ -139,7 +140,7 @@ router.get('/', function(req, res) {
     let categoryFilter = category ? ` AND category = @category` : '';
 
     let query = `
-    SELECT p.productId, p.productName, p.productPrice, c.categoryName
+    SELECT p.productId, p.productName, p.productPrice, p.productImage, p.productImageURL, c.categoryName
     FROM product p
     JOIN category c ON p.categoryId = c.categoryId
     WHERE 1=1`;    
@@ -160,14 +161,32 @@ router.get('/', function(req, res) {
                 .query(query);
 
             res.write("<h3>All Products </h3>");
-            res.write("<table border='1'><tr><th>Add to Cart</th><th>Product Name</th><th>Category</th><th>Price</th></tr>");
+            res.write("<table border='1'><tr><th>Add to Cart</th><th>Product Image</th><th>Product Name</th><th>Category</th><th>Price</th></tr>");
 
             result.recordset.forEach(product => {
                 let addToCartLink = "/addcart?id=" + product.productId + "&name=" + encodeURIComponent(product.productName) + "&price=" + product.productPrice.toFixed(2);
                 let productPageLink= "/product?id=" + product.productId;
+                let displayImageLink="/displayImage?id="+ product.productId;
+                let localImageLink="/public/"+ product.productImageURL;
+                let imagetext="";
+                if(product.productImageURL){
+                    console.log("1")
+                    imagetext="<img src =" + localImageLink + "></img>";
+                }
+                else if(product.productImage){
+                    console.log("2")
+                    imagetext="<img src=" + displayImageLink + "></img>";
+                }
+                else{
+                    console.log("3")
+                    imagetext='No Image available';
+                }
+                
+
 
                 res.write("<tr>");
                 res.write("<td><a href='" + addToCartLink + "'>Add to Cart</a></td>");
+                res.write("<td>" + imagetext + "</td>");
                 res.write("<td><a href='" + productPageLink + "'>" + product.productName+ "</a></td>");                
                 res.write("<td>" + product.categoryName + "</td>");
                 res.write("<td>$" + product.productPrice.toFixed(2) + "</td>");
