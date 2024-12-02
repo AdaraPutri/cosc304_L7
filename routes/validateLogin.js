@@ -24,11 +24,9 @@ async function validateLogin(req) {
     
     let username = req.body.username;
     let password = req.body.password;
-   // let authenticatedUser =  await (async function() {
         try {
             let pool = await sql.connect(dbConfig);
 
-	// TODO: Check if userId and password match some customer account. 
 	// If so, set authenticatedUser to be the username.
     let query="SELECT c.userid FROM customer c WHERE c.userid=@userid AND c.password= @passcode";
     let result=await pool.request()
@@ -52,7 +50,7 @@ async function validateLogin(req) {
             console.dir(err);
             return false;
         }
-    //})
+    
 
     return authenticatedUser;
 }

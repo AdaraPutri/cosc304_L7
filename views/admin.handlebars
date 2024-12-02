@@ -14,7 +14,7 @@
 
     <h2>Add New Product</h2>
             <div>
-            <form method="get" action="/admin">
+            <form method="post" action="/addprod">
                 <label>Product Name: </label>
                 <input type="text" name="productName" placeholder="Enter Name"><br>
                 <label>Product Price: $</label>
@@ -23,5 +23,13 @@
                 <input type="text" name="productDesc" placeholder="Enter Description"><br> 
                 <label>Category Id: </label>
                 <input type="number" name="productCategory"><br>
+                <input type="submit" />
             </form>
             </div>
+    {{#if successMessage}}
+        <p style="color: green; font-weight: bold;">{{successMessage}}</p>
+    {{/if}}
+
+    {{#if errorMessage}}
+        <p style="color: red; font-weight: bold;">{{errorMessage}}</p>
+    {{/if}}

@@ -10,6 +10,8 @@ router.get('/', function(req, res, next) {
     
 	
     res.setHeader('Content-Type', 'text/html');
+    let successMessage=req.session.successMessage? req.session.successMessage: false;
+    let errorMessage=req.session.errorMessage? req.session.errorMessage: false;
 
     (async function() {
         try {
@@ -20,16 +22,21 @@ router.get('/', function(req, res, next) {
             let result= await pool.request()
                             .query(query);
 
-            const orders= result.recordset;
+            const orders= result.recordset; 
 
-
+            //Create a fullDate attribute for ease of using handlebars
             orders.forEach(order => {
                 order.fullDate = `${order.year}-${order.month}-${order.day}`;
                 
             });
-
+            //render the admin page
             res.render('admin',{
-                order: orders});
+                order: orders,
+                successMessage: successMessage,
+                errorMessage:errorMessage
+            });
+            req.session.successMessage=null;
+            req.session.errorMessage=null;
 
         } catch(err) {
             console.dir(err);
@@ -37,6 +44,8 @@ router.get('/', function(req, res, next) {
             res.end();
         }
     })();
+    
 });
+
 
 module.exports = router;

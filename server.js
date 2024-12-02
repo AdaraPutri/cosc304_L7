@@ -20,6 +20,7 @@ let customer=require('./routes/customer');
 let validateLogin=require('./routes/validateLogin');
 let index=require('./routes/index');
 let ship=require('./routes/ship');
+let addprod=require('./routes/addprod')
 
 const app = express();
 
@@ -85,6 +86,7 @@ app.use('/customer', customer);
 app.use('/validateLogin', validateLogin);
 app.use('/index', index);
 app.use('/ship',ship);
+app.use('/addprod', addprod);
 
 // Rendering the main page
 app.get('/', function (req, res) {
