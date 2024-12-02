@@ -20,8 +20,9 @@ let customer=require('./routes/customer');
 let validateLogin=require('./routes/validateLogin');
 let index=require('./routes/index');
 let ship=require('./routes/ship');
-let addprod=require('./routes/addprod')
-let updateprod= require('./routes/updateprod')
+let addprod=require('./routes/addprod');
+let updateprod= require('./routes/updateprod');
+let deleteprod=require('./routes/deleteprod');
 
 const app = express();
 
@@ -89,6 +90,7 @@ app.use('/index', index);
 app.use('/ship',ship);
 app.use('/addprod', addprod);
 app.use('/updateprod', updateprod);
+app.use('/deleteprod', deleteprod);
 
 // Rendering the main page
 app.get('/', function (req, res) {

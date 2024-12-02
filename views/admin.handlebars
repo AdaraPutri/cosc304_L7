@@ -38,7 +38,7 @@
         <div>
             <form method="post" action="/updateprod">
                 <label >ProductId:</label>
-                <input type="text" name="productId" placeholder="Enter Product ID"><br>
+                <input type="number" name="productId" placeholder="Enter Product ID"><br>
                 <label>New Product Name: </label>
                 <input type="text" name="productName" placeholder="Enter updated name"><br>
                 <label>New Product Price: $</label>
@@ -58,6 +58,17 @@
 
     <h2>Delete Product</h2>
         <div>
-            <form action="post" action="deletepr"></form>
+            <form method="post" action="/deleteprod">
+                <label >ProductId: </label>
+                <input type="number" name="productId" placeholder="Enter Product ID"><br>
+                <input type="submit" />
+            </form>
         </div>
+    {{#if deleteSuccessMessage}}
+        <p style="color: green; font-weight: bold;">{{deleteSuccessMessage}}</p>
+    {{/if}}
+
+    {{#if deleteErrorMessage}}
+        <p style="color: red; font-weight: bold;">{{deleteErrorMessage}}</p>
+    {{/if}}
 

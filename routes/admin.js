@@ -14,6 +14,8 @@ router.get('/', function(req, res, next) {
     let errorMessage=req.session.errorMessage? req.session.errorMessage: false;
     let updateSuccessMessage=req.session.updateSuccessMessage;
     let updateErrorMessage=req.session.updateErrorMessage;
+    let deleteSuccessMessage=req.session.deleteSuccessMessage;
+    let deleteErrorMessage=req.session.deleteErrorMessage;
 
     (async function() {
         try {
@@ -38,12 +40,16 @@ router.get('/', function(req, res, next) {
                 errorMessage:errorMessage,
                 updateSuccessMessage: updateSuccessMessage,
                 updateErrorMessage: updateErrorMessage,
+                deleteErrorMessage: deleteErrorMessage,
+                deleteSuccessMessage: deleteSuccessMessage
 
             });
             req.session.successMessage=null;
             req.session.errorMessage=null;
             req.session.updateSuccessMessage=null;
             req.session.updateErrorMessage=null;
+            req.session.deleteSuccessMessage=null;
+            req.session.deleteErrorMessage=null;
 
 
         } catch(err) {
