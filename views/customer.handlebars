@@ -1,0 +1,66 @@
+
+
+{{#if customer}}
+<h1>{{customer.header}}</h1>
+
+<div>
+    <form method="post" action="/updateCustDetails">
+        <div>
+            <span>Customer Id: </span>
+            <span>{{customer.customerId}}</span>
+        </div>
+
+        <div>
+            <label for="userId"> User Id: </label>
+            <input type="text" name="userId" placeholder="{{customer.userid}}">
+        </div>
+
+        <div>
+            <label for="">First Name: </label>
+            <input type="text" name="firstName" placeholder="{{customer.firstName}}">   
+        </div>
+
+        <div>
+             <label for="lastName">Last Name: </label>
+            <input type="text" name="lastName" placeholder="{{customer.lastName}}"> 
+        </div>
+        
+        <div>
+            <label for="phoneNum">Phone Number: </label> 
+            <input type="text" name="phoneNum" placeholder="{{customer.phonenum}}">
+        </div>
+
+        <div>
+            <label for="address">Address: </label>
+            <input type="text" name="address" placeholder="{{customer.address}}">
+        </div>
+
+        <div>
+            <label for="country">Country: </label> 
+            <input type="text" name="country" placeholder="{{customer.country}}">
+        </div>
+        
+        <div>
+            <label for="city">City: </label>
+            <input type="text" name="city" placeholder="{{customer.city}}">     
+        </div>
+
+        <div>
+            <label for="state">State: </label>
+            <input type="text" name="state" placeholder="{{customer.state}}">
+        </div> 
+        
+        <div>
+            <label for="postalCode">Postal Code: </label> 
+            <input type="text" name="postalCode" placeholder="{{customer.postalCode}}">
+        </div>
+        
+    </form>
+</div>
+{{/if}}
+
+{{#if notLoggedIn}}
+<h1>{{notLoggedIn}}</h1>
+{{/if}}
+    
+
