@@ -28,7 +28,7 @@ const app = express();
 
 // This DB Config is accessible globally
 dbConfig = {    
-  server: 'cosc304_sqlserver',
+  server: 'localhost',
   database: 'orders',
   authentication: {
       type: 'default',
