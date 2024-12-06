@@ -23,6 +23,7 @@ let ship=require('./routes/ship');
 let addprod=require('./routes/addprod');
 let updateprod= require('./routes/updateprod');
 let deleteprod=require('./routes/deleteprod');
+let review=require('./routes/review')
 
 const app = express();
 
@@ -91,6 +92,7 @@ app.use('/ship',ship);
 app.use('/addprod', addprod);
 app.use('/updateprod', updateprod);
 app.use('/deleteprod', deleteprod);
+app.use('/review', review);
 
 // Rendering the main page
 app.get('/', function (req, res) {

@@ -17,11 +17,12 @@ router.get('/', function(req, res, next) {
    const product_query= "SELECT * from product p WHERE productId= @productId";
     let result= await request.query(product_query)
 
-    const review_query="SELECT* FROM review WHERE productId=@productId ORDER BY reviewDate desc";
+    const review_query="SELECT reviewDate, reviewRating, firstName, lastName, reviewComment, YEAR(reviewDate) as year, MONTH(reviewDate) as month, DAY(reviewDate) as day FROM review r JOIN customer c ON c.customerId=r.customerId WHERE productId=@productId ORDER BY reviewDate desc";
     let review_results= await pool.request()
                                 .input('productId', sql.Int, productId)
                                 .query(review_query)
-
+                                
+    
 
 
      //TODO Clean up code by using resultset[0] instead of product   
@@ -46,15 +47,22 @@ router.get('/', function(req, res, next) {
     //Retrieve display info for review 
             let review=review_results.recordset;
             let noReviewMessage;
-            console.log(review.length);
+            
+            review.forEach(review => {
+                review.fullDate = `${review.year}-${review.month}-${review.day}`;
+                review.fullRating= review.reviewRating + " Stars";
+                review.customerName="Reviewer: " + review.firstName + " " + review.lastName;
+            });
 
+
+            console.log(review)
             if(review.length==0){
                 noReviewMessage="No reviews yet!";
             }
             
-
-
-        
+            
+            console.log(productId)
+        //don't forget to add in successful and exsiting review messages
         res.render('product',{
             productName: productName,
             localImageLink : localImageLink,
@@ -63,9 +71,15 @@ router.get('/', function(req, res, next) {
             addToCartLink: addToCartLink,
             continueShoppingLink: continueShoppingLink,
             review:review,
-            noReviewMessage: noReviewMessage
+            noReviewMessage: noReviewMessage,
+            productId : productId,
+            successfulReviewMessage : req.session.successfulReviewMessage,
+            existingReviewMessage: req.session.existingReviewMessage
         });
     
+        req.session.successfulReviewMessage=null;
+        req.session.existingReviewMessage=null;
+        
 
         } catch(err) {
             console.dir(err);
