@@ -14,9 +14,17 @@ router.get('/', function(req, res, next) {
 
             request.input('productId', sql.Int, productId)
             
-   const query= "SELECT * from product p WHERE productId= @productId";
-    let result= await request.query(query)
+   const product_query= "SELECT * from product p WHERE productId= @productId";
+    let result= await request.query(product_query)
 
+    const review_query="SELECT* FROM review WHERE productId=@productId ORDER BY reviewDate desc";
+    let review_results= await pool.request()
+                                .input('productId', sql.Int, productId)
+                                .query(review_query)
+
+
+
+     //TODO Clean up code by using resultset[0] instead of product   
 	//Retrieve and display info for the product
             const product= result.recordset;
             let productName=product[0].productName;
@@ -35,13 +43,27 @@ router.get('/', function(req, res, next) {
                 localImageLink="/public/"+ product[0].productImageURL;
             }
 
+    //Retrieve display info for review 
+            let review=review_results.recordset;
+            let noReviewMessage;
+            console.log(review.length);
+
+            if(review.length==0){
+                noReviewMessage="No reviews yet!";
+            }
+            
+
+
+        
         res.render('product',{
             productName: productName,
             localImageLink : localImageLink,
             displayImageLink: displayImageLink,
             productDesc: productDesc,
             addToCartLink: addToCartLink,
-            continueShoppingLink: continueShoppingLink
+            continueShoppingLink: continueShoppingLink,
+            review:review,
+            noReviewMessage: noReviewMessage
         });
     
 

@@ -9,3 +9,16 @@
     <h2><a href="{{addToCartLink}}">Add to Cart</a></h2>
 
     <h2><a href="{{continueShoppingLink}}">Continue Shopping</a></h2>
+
+    <h2>Product Reviews</h2>
+        {{#each review}}
+        <div>
+            <div>this.reviewDate</div>
+            <div>this.reviewRating</div>\
+            <div>this.reviewComment</div>
+            <div>this.customerId</div>
+        </div>
+        {{/each}}
+
+    <h3>{{noReviewMessage}}</h3>
+
