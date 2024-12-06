@@ -5,7 +5,7 @@ const sql = require('mssql');
 
 router.post('/', async(req, res) =>{
     const{ productName, productPrice, productDesc, productCategory} = req.body;
-
+    //If any of the fields are not filled in send a status error
     if(!productName||!productPrice||!productDesc||!productCategory){
         return res.status(400).send('All fields are required.');
 
@@ -13,7 +13,7 @@ router.post('/', async(req, res) =>{
 try{
     let pool= await sql.connect(dbConfig);
 
-
+    //Insert product into database
     query="INSERT INTO product(productName, productPrice, productDesc, categoryId) VALUES (@productName, @productPrice, @productDesc, @productCategory)";
     result= await pool.request()
     .input("productName", sql.NVarChar,productName)

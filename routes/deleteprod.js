@@ -20,6 +20,7 @@ try{
 }
 catch(err){
     console.error(err);
+    //Theres some kind of cascade going on based on how the database is set up
     if (err.code === 'EPARAM' || err.message.includes('REFERENCE constraint')) {
         req.session.deleteErrorMessage = 'Cannot delete product because it is still associated with orders.';
     } else {

@@ -8,7 +8,7 @@ router.post('/', async(req, res) =>{
 
 try{
     let pool= await sql.connect(dbConfig);
-
+    //Update the database for the given product Id
     query="UPDATE product SET productName=@productName, productPrice=@productPrice, productDesc=@productDesc WHERE productId=@productId";
 
     result= await pool.request()
