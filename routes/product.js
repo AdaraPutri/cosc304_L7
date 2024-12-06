@@ -20,19 +20,22 @@ router.get('/', function(req, res, next) {
 	//Retrieve and display info for the product
             const product= result.recordset;
             let productName=product[0].productName;
-            console.log(productName);
             let displayImageLink=null;
             let localImageLink=null;
             let addToCartLink = "/addcart?id=" + product[0].productId + "&name=" + encodeURIComponent(product[0].productName) + "&price=" + product[0].productPrice.toFixed(2);
             let continueShoppingLink="/listprod";
             let productDesc=product[0].productDesc;
+            console.log(productName)
+            console.log(productDesc)
             
             console.log(product[0].productDesc)
             if(product[0].productImage){
                 displayImageLink="/displayImage?id="+ product[0].productId;
+                console.log(displayImageLink)
             }
             if(product[0].productImageURL){
                 localImageLink="/public/"+ product[0].productImageURL;
+                console.log(localImageLink)
             }
 
         res.render('product',{

@@ -65,6 +65,10 @@ app.use(session({
 console.log('Setting up handlebars rendering engine...');
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
+
+//To allow images from the public file to display
+app.use('/public', express.static('public'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
