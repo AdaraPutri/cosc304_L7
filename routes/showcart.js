@@ -1,116 +1,150 @@
 const express = require('express');
 const router = express.Router();
+const sql = require('mssql');
+
+const dbConfig = {
+    server: 'cosc304_sqlserver',
+    database: 'orders',
+    authentication: {
+        type: 'default',
+        options: {
+            userName: 'sa',
+            password: '304#sa#pw'
+        }
+    },
+    options: {
+        encrypt: false,
+        enableArithAbort: false
+    }
+};
 
 // Display shopping cart
-router.get('/', function(req, res, next) {
-    let productList = false;
-    res.setHeader('Content-Type', 'text/html');
-    res.write("<title>Your Shopping Cart</title>");
-    res.write(`
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5; /* Light gray background */
-            color: #333; /* Dark text color */
-        }
+router.get('/', async function(req, res) {
+    const customerId = req.session.customerId; // Assuming customer ID is stored in session after login
 
-        .container {
-            width: 80%;
-            margin: 20px auto;
-            background-color: #ffffff; /* White background for the content */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    if (!customerId) {
+        return res.status(401).send("Please log in to view your cart.");
+    }
 
-        h1 {
-            font-family: 'Arial', sans-serif;
-            color: #4CAF50; /* Sage green */
-            text-align: center;
-        }
+    try {
+        let pool = await sql.connect(dbConfig);
 
-        h2 {
-            text-align: center;
-            color: #388E3C; /* Darker sage green */
-        }
+        // Retrieve active cart items for the user
+        const result = await pool.request()
+            .input('customerId', sql.Int, customerId)
+            .query(`
+                SELECT op.productId, p.productName, op.quantity, op.price,
+                       (op.quantity * op.price) AS subtotal
+                FROM ordersummary os
+                JOIN orderproduct op ON os.orderid = op.orderid
+                JOIN product p ON op.productid = p.productid
+                WHERE os.customerid = @customerid AND os.totalamount IS NULL
+            `);
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+        const cartItems = result.recordset;
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #4CAF50; /* Sage green border */
-        }
-
-        th {
-            background-color: #A5D6A7; /* Light sage green */
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #E8F5E9; /* Light sage green for even rows */
-        }
-
-        a {
-            text-decoration: none;
-            color: #4CAF50; /* Sage green color for links */
-        }
-
-        a:hover {
-            color: #388E3C; /* Darker sage green on hover */
-        }
-
-        .total {
-            font-weight: bold;
-            color: #388E3C; /* Dark sage green for total */
-            text-align: right;
-        }
-
-        .actions {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
-    `);
-
-    if (req.session.productList) {
-        productList = req.session.productList;
-        res.write("<div class='container'>");
-        res.write("<h1>Your Shopping Cart</h1>");
-        res.write("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
-        res.write("<th>Price</th><th>Subtotal</th><th>Action</th></tr>");
-
-        let total = 0;
-        for (let i = 0; i < productList.length; i++) {
-            product = productList[i];
-            if (!product) {
-                continue;
+        res.setHeader('Content-Type', 'text/html');
+        res.write("<title>Your Shopping Cart</title>");
+        res.write(`
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                color: #333;
             }
 
-            res.write("<tr><td>" + product.id + "</td>");
-            res.write("<td>" + product.name + "</td>");
-            res.write("<td align=\"center\">" + product.quantity + "</td>");
-            res.write("<td align=\"right\">$" + Number(product.price).toFixed(2) + "</td>");
-            res.write("<td align=\"right\">$" + (Number(product.quantity) * Number(product.price)).toFixed(2) + "</td>");
-            res.write(`<td><a href="/updateQuantity?productId=${product.id}&action=decrease">-</a> <a href="/updateQuantity?productId=${product.id}&action=increase">+</a></td>`);
-            res.write(`<td><a href="/removeItem?productId=${product.id}">Remove</a></td></tr>`);
-            total = total + product.quantity * product.price;
-        }
-        res.write("<tr><td colspan=\"5\" class='total'>Order Total</td><td align=\"right\" class='total'>$" + total.toFixed(2) + "</td></tr>");
-        res.write("</table>");
+            .container {
+                width: 80%;
+                margin: 20px auto;
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
 
-        res.write("<div class='actions'><h2><a href=\"checkout\">Check Out</a></h2></div>");
-    } else {
-        res.write("<div class='container'><h1>Your shopping cart is empty!</h1></div>");
+            h1 {
+                font-family: 'Arial', sans-serif;
+                color: #4CAF50;
+                text-align: center;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            th, td {
+                padding: 12px;
+                text-align: center;
+                border: 1px solid #4CAF50;
+            }
+
+            th {
+                background-color: #A5D6A7;
+                color: white;
+            }
+
+            tr:nth-child(even) {
+                background-color: #E8F5E9;
+            }
+
+            a {
+                text-decoration: none;
+                color: #4CAF50;
+            }
+
+            a:hover {
+                color: #388E3C;
+            }
+
+            .total {
+                font-weight: bold;
+                color: #388E3C;
+                text-align: right;
+            }
+
+            .actions {
+                text-align: center;
+                margin-top: 20px;
+            }
+        </style>
+        `);
+
+        res.write("<div class='container'>");
+        if (cartItems.length > 0) {
+            res.write("<h1>Your Shopping Cart</h1>");
+            res.write("<table><tr><th>Product Name</th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr>");
+
+            let totalAmount = 0;
+            cartItems.forEach(item => {
+                totalAmount += item.subtotal;
+                res.write(`<tr>
+                    <td>${item.productName}</td>
+                    <td>${item.quantity}</td>
+                    <td align="right">$${item.price.toFixed(2)}</td>
+                    <td align="right">$${item.subtotal.toFixed(2)}</td>
+                    <td><a href="/updateQuantity?productId=${item.id}&action=decrease">-</a> <a href="/updateQuantity?productId=${item.id}&action=increase">+</a></td>
+                    <td><a href="/removeItem?productId=${item.id}">Remove</a></td></tr>
+                </tr>`);
+            });
+
+            res.write(`<tr><td colspan="3" class='total'>Order Total</td><td align="right" class='total'>$${totalAmount.toFixed(2)}</td></tr>`);
+            res.write("</table>");
+
+            res.write("<div class='actions'><h2><a href='/checkout'>Proceed to Checkout</a></h2></div>");
+        } else {
+            res.write("<h1>Your shopping cart is empty!</h1>");
+        }
+        res.write('<div class="actions"><h2><a href="/listprod">Continue Shopping</a></h2></div>');
+        res.write("</div>");
+        res.end();
+    } catch (err) {
+        console.error("Error retrieving cart:", err);
+        res.status(500).send("Internal Server Error");
     }
-    res.write('<div class="actions"><h2><a href="listprod">Continue Shopping</a></h2></div>');
-    res.end();
 });
 
 // Handle increase/decrease of quantity
@@ -141,3 +175,4 @@ router.get('/removeItem', function(req, res) {
 });
 
 module.exports = router;
+
