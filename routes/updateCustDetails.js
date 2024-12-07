@@ -4,17 +4,18 @@ const sql = require('mssql');
 
 
 router.post('/', async(req, res) =>{
-    const{ customerId, userid, firstName, lastName, phonenum, address, country, city, state, postalCode} = req.body;
+    const{ customerId, userid, password, firstName, lastName, phonenum, address, country, city, state, postalCode} = req.body;
 
 
 try{
    
     let pool= await sql.connect(dbConfig);
     query=`UPDATE customer 
-        SET userid=@userid, firstName= @firstName, lastName=@lastName, phonenum=@phonenum, address=@address, country=@country, city=@city, state=@state, postalCode=@postalCode
+        SET userid=@userid, firstName= @firstName, lastName=@lastName, password=@password, phonenum=@phonenum, address=@address, country=@country, city=@city, state=@state, postalCode=@postalCode
         WHERE customerId=@customerId `;
     await pool.request()
                 .input("userid", sql.NVarChar, userid)
+                .input("password",sql.NVarChar,password)
                 .input("firstName",sql.NVarChar, firstName)
                 .input("lastName",sql.NVarChar,lastName)
                 .input("phonenum", sql.NVarChar, phonenum)

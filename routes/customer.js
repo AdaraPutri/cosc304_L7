@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 
             // Query to get customer information for userId 'arnold' and password 'test'
             let query = `
-                SELECT customerId, firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid
+                SELECT customerId, firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password
                 FROM customer
                 WHERE userid = @userid
             `;

@@ -1,5 +1,5 @@
 
-
+<a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>
 {{#if customer}}
 <h1>{{customer.header}}</h1>
 
@@ -14,6 +14,11 @@
         <div>
             <label for="userId"> User Id: </label>
             <input type="text" name="userid" value="{{customer.userid}}">
+        </div>
+
+        <div>
+            <label for="password"> Password: </label>
+            <input type="text" name="password" value="{{customer.password}}">
         </div>
 
         <div>
