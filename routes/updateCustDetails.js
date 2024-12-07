@@ -11,7 +11,7 @@ try{
    
     let pool= await sql.connect(dbConfig);
     query=`UPDATE customer 
-        SET userid=@userid, firstName= @firstName, lastName=@lastName, phonenum=@phonenum, address=@address, country=@country, city=@city, state=@state
+        SET userid=@userid, firstName= @firstName, lastName=@lastName, phonenum=@phonenum, address=@address, country=@country, city=@city, state=@state, postalCode=@postalCode
         WHERE customerId=@customerId `;
     await pool.request()
                 .input("userid", sql.NVarChar, userid)
@@ -23,6 +23,7 @@ try{
                 .input("state",sql.NVarChar, state)
                 .input("city", sql.NVarChar, city)
                 .input("customerId",sql.NVarChar, customerId)
+                .input("postalCode", sql.NVarChar, postalCode)
                 .query(query); 
         req.session.successfulInfoUpdate= "Your Personal Information has been updated!"        
     console.log("Personal Info has been updated")
