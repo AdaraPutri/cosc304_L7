@@ -111,7 +111,7 @@ router.get('/', function(req, res) {
     
     res.write(`
     <!-- Back to Home Text with Arrow -->
-    <a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>
+    <a href="http://localhost:3000/index" class="back-link">&lt;&lt; Back to Home</a>
     <div class="form-container">
         <form method="get" action="/listprod">
             <input type="text" name="productName" placeholder="Enter product name" />

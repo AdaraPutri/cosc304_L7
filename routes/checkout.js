@@ -77,7 +77,7 @@ router.get('/', function(req, res, next) {
     </style>
     `);
 
-    res.write('<!-- Back to Home Text with Arrow --><a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>');
+    res.write('<!-- Back to Home Text with Arrow --><a href="http://localhost:3000/index" class="back-link">&lt;&lt; Back to Home</a>');
     res.write("<div class='container'>");
     res.write("<h1>Enter your customer id and password to complete the transaction:</h1>");
     res.write('<form method="get" action="order">');
