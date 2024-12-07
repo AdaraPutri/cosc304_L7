@@ -24,12 +24,12 @@ let addprod=require('./routes/addprod');
 let updateprod= require('./routes/updateprod');
 let deleteprod=require('./routes/deleteprod');
 let review=require('./routes/review')
-
+let updateCustDetails= require('./routes/updateCustDetails');
 const app = express();
 
 // This DB Config is accessible globally
 dbConfig = {    
-  server: 'localhost',
+  server: 'cosc304_sqlserver',
   database: 'orders',
   authentication: {
       type: 'default',
@@ -98,6 +98,7 @@ app.use('/addprod', addprod);
 app.use('/updateprod', updateprod);
 app.use('/deleteprod', deleteprod);
 app.use('/review', review);
+app.use('/updateCustDetails', updateCustDetails);
 
 // Rendering the main page
 app.get('/', function (req, res) {
