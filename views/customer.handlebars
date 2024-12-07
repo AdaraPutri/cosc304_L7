@@ -1,0 +1,80 @@
+
+<a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>
+{{#if customer}}
+<h1>{{customer.header}}</h1>
+
+<div>
+    <form method="post" action="/updateCustDetails">
+    <input type="hidden" name="customerId" value="{{customer.customerId}}">
+        <div>
+            <span>Customer Id: </span>
+            <span>{{customer.customerId}}</span>
+        </div>
+
+        <div>
+            <label for="userId"> User Id: </label>
+            <input type="text" name="userid" value="{{customer.userid}}">
+        </div>
+
+        <div>
+            <label for="password"> Password: </label>
+            <input type="text" name="password" value="{{customer.password}}">
+        </div>
+
+        <div>
+            <label for="">First Name: </label>
+            <input type="text" name="firstName" value="{{customer.firstName}}">   
+        </div>
+
+        <div>
+             <label for="lastName">Last Name: </label>
+            <input type="text" name="lastName" value="{{customer.lastName}}"> 
+        </div>
+        
+        <div>
+            <label for="phonenum">Phone Number: </label> 
+            <input type="text" name="phonenum" value="{{customer.phonenum}}">
+        </div>
+
+        <div>
+            <label for="address">Address: </label>
+            <input type="text" name="address" value="{{customer.address}}">
+        </div>
+
+        <div>
+            <label for="country">Country: </label> 
+            <input type="text" name="country" value="{{customer.country}}">
+        </div>
+        
+        <div>
+            <label for="city">City: </label>
+            <input type="text" name="city" value="{{customer.city}}">     
+        </div>
+
+        <div>
+            <label for="state">State: </label>
+            <input type="text" name="state" value="{{customer.state}}">
+        </div> 
+        
+        <div>
+            <label for="postalCode">Postal Code: </label> 
+            <input type="text" name="postalCode" value="{{customer.postalCode}}">
+        </div>
+
+        <div>
+            <input type="submit">
+        </div>
+        
+    </form>
+
+</div>
+<div><p>{{successfulInfoUpdate}}</p></div>
+<div><p>{{custDetailErrorMessage}}</p></div>
+{{/if}}
+
+{{#if notLoggedIn}}
+<h1>{{notLoggedIn}}</h1>
+
+{{/if}}
+    
+
