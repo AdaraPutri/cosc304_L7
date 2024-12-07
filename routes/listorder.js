@@ -112,7 +112,7 @@ router.get('/', function(req, res, next) {
                 });
             });
             
-            res.write('<!-- Back to Home Text with Arrow --><a href="http://localhost" class="back-link">&lt;&lt; Back to Home</a>');
+            res.write('<!-- Back to Home Text with Arrow --><a href="http://localhost:3000/index" class="back-link">&lt;&lt; Back to Home</a>');
             res.write('<h1>Order List</h1>');
 
             res.write("<table><tr><th>Order Id</th><th>Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr>");

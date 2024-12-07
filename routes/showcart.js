@@ -1,23 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// Helper function to update cart quantity
-function updateCartQuantity(cart, productId, action) {
-    let product = cart.find(item => item.id == productId);
-    if (product) {
-        if (action === 'increase') {
-            product.quantity++;
-        } else if (action === 'decrease' && product.quantity > 1) {
-            product.quantity--;
-        }
-    }
-}
-
-// Helper function to remove item from cart
-function removeItemFromCart(cart, productId) {
-    return cart.filter(item => item.id != productId);
-}
-
 // Display shopping cart
 router.get('/', function(req, res, next) {
     let productList = false;

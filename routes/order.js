@@ -207,7 +207,7 @@ router.get('/', async function(req, res) {
         
         res.write("<h2>Thank you for your order!</h2>");
         res.write('<h2><a href="listprod">Continue Shopping</a></h2>');
-        res.write("<a href='http://localhost/'>Return to Home</a>");
+        res.write("<a href='http://localhost:3000/index'>Return to Home</a>");
         res.end();
 
     } catch (error) {
