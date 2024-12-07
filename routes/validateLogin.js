@@ -1,58 +1,71 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../auth');
 const sql = require('mssql');
 
+const dbConfig = {
+    server: 'cosc304_sqlserver',
+    database: 'orders',
+    authentication: {
+        type: 'default',
+        options: {
+            userName: 'sa',
+            password: '304#sa#pw'
+        }
+    },
+    options: {
+        encrypt: false,
+        enableArithAbort: false
+    }
+};
+
 router.post('/', function(req, res) {
-    // Have to preserve async context since we make an async call
-    // to the database in the validateLogin function.
     (async () => {
         let authenticatedUser = await validateLogin(req);
         if (authenticatedUser) {
-            req.session.authenticatedUser=authenticatedUser;
+            req.session.authenticatedUser = authenticatedUser.username; // Store username
+            req.session.customerId = authenticatedUser.customerId; // Store customerId
             res.redirect("/");
         } else {
+            req.session.loginMessage = "Invalid username or password.";
             res.redirect("/login");
         }
-     })();
+    })();
 });
 
 async function validateLogin(req) {
     if (!req.body || !req.body.username || !req.body.password) {
         return false;
     }
-    
-    let username = req.body.username;
-    let password = req.body.password;
-        try {
-            let pool = await sql.connect(dbConfig);
 
-	// If so, set authenticatedUser to be the username.
-    let query="SELECT c.userid FROM customer c WHERE c.userid=@userid AND c.password= @passcode";
-    let result=await pool.request()
-        .input('userid',sql.NVarChar, username)
-        .input('passcode',sql.NVarChar, password)
-        .query(query);
-       
-    //currently assumes that userid and password pairs are unique 
-    if(result.recordset.length > 0){
-    
-        return username;
-        }
-    else{
-        
-        return false;
-        }
-           
-        
-        } catch(err) {
-            
-            console.dir(err);
+    const username = req.body.username;
+    const password = req.body.password;
+
+    try {
+        const pool = await sql.connect(dbConfig);
+
+        // Query to validate login and retrieve customerId
+        const query = `
+            SELECT c.userid, c.customerId 
+            FROM customer c 
+            WHERE c.userid = @userid AND c.password = @passcode
+        `;
+        const result = await pool.request()
+            .input('userid', sql.NVarChar, username)
+            .input('passcode', sql.NVarChar, password)
+            .query(query);
+
+        if (result.recordset.length > 0) {
+            return {
+                username: result.recordset[0].userid,
+                customerId: result.recordset[0].customerId
+            };
+        } else {
             return false;
         }
-    
-
-    return authenticatedUser;
+    } catch (err) {
+        console.error("Error validating login:", err);
+        return false;
+    }
 }
 
 module.exports = router;
