@@ -12,7 +12,12 @@ router.get('/', function(req, res, next) {
 
     res.render('login', {
         title: "Login Screen",
-        loginMessage: loginMessage
+        loginMessage: loginMessage,
+        navItems: [{ name: 'Home', link: '/', active: true },
+            { name: 'Cart', link: '/showcart', active: false },
+            { name: 'Login', link: '/login', active: false },
+            { name: 'Logout', link: '/logout', active: false },
+            {name: req.session.authenticatedUser, link: '/customer' ,active: false }]
     });
 });
 

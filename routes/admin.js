@@ -41,7 +41,12 @@ router.get('/', function(req, res, next) {
                 updateSuccessMessage: updateSuccessMessage,
                 updateErrorMessage: updateErrorMessage,
                 deleteErrorMessage: deleteErrorMessage,
-                deleteSuccessMessage: deleteSuccessMessage
+                deleteSuccessMessage: deleteSuccessMessage,
+                navItems: [{ name: 'Home', link: '/', active: true },
+                    { name: 'Cart', link: '/showcart', active: false },
+                    { name: 'Login', link: '/login', active: false },
+                    { name: 'Logout', link: '/logout', active: false },
+                    {name: req.session.authenticatedUser, link: '/customer' ,active: false }]
 
             });
             req.session.successMessage=null;

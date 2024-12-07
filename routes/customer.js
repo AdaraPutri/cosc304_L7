@@ -47,7 +47,12 @@ router.get('/', function(req, res, next) {
                 customer: customer,
                 notLoggedIn: notLoggedIn,
                 successfulInfoUpdate: req.session.successfulInfoUpdate,
-                custDetailErrorMessage: req.session.custDetailErrorMessage
+                custDetailErrorMessage: req.session.custDetailErrorMessage,
+                navItems: [{ name: 'Home', link: '/', active: true },
+                    { name: 'Cart', link: '/showcart', active: false },
+                    { name: 'Login', link: '/login', active: false },
+                    { name: 'Logout', link: '/logout', active: false },
+                    {name: req.session.authenticatedUser , link: '/customer' ,active: false }]
         });
 
         req.session.successfulInfoUpdate=null;
