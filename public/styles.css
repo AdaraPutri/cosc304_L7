@@ -1,0 +1,104 @@
+av {
+    background-color: white;
+    padding: 10px;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  nav ul li {
+    display: inline;
+  }
+  
+  nav ul li a {
+    color: #66bb6a;
+    text-decoration: none;
+  }
+  
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+
+/*styling for body*/  
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://lh6.googleusercontent.com/UAHTn1oFIMaFeNIG5xfHZBAcyw3XtwCB7xKUBYkc3SBoEkk1Vqx115lVUVxPd0zpt043rP85S51bCciN_u33MH3wuY2joHvprvMpIqmPIXbLoTAs4AYzc0pGrb4zryP_j-QnJs9cEdkGvfP-OCiO9zY'); /* Relative path to your image */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-position: center; /* Center the background image */
+    background-attachment: fixed; /* Make sure the background stays fixed during scrolling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    text-align: center; /* Center text */
+}
+
+.content {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9); /* White background with some transparency for readability */
+    padding: 20px;
+    border-radius: 10px; /* Optional: rounded corners */
+}
+
+h1 {
+    color: #81c784; /* Soft sage green text */
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: center; /* Center table text */
+}
+
+th, td {
+    padding: 12px;
+    text-align: center; /* Center text in table cells */
+    border: 1px solid #66bb6a; /* Sage green border */
+}
+
+th {
+    background-color: #a5d6a7; /* Light sage green header */
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #e8f5e9; /* Light sage green for even rows */
+}
+
+.form-container {
+    margin-bottom: 20px;
+}
+
+input[type="text"], select {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #81c784; /* Soft sage green border */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #81c784; /* Soft sage green button */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #66bb6a; /* Darker sage green on hover */
+}
+
+button[type="reset"] {
+    background-color: #a5d6a7; /* Light sage green reset button */
+}
+
+button[type="reset"]:hover {
+    background-color: #66bb6a; /* Darker sage green on hover */
+}
